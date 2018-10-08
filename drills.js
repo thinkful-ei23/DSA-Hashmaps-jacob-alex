@@ -1,7 +1,7 @@
 'use strict';
 
 const HashMap = require('./HashMap');
-const lor = new HashMap();
+// const lor = new HashMap();
 
 function main() {
   // lor.set('Hobbit', 'Bilbo');
@@ -16,29 +16,76 @@ function main() {
   // lor.set('HalfElven', 'Arwen');
   // lor.set('Ent', 'Treebeard');
   // console.log(lor.get('Maiar'));
-  
-  console.log(palindromeChecker('hello'));
-  console.log(palindromeChecker('acecarr'));
-  console.log(palindromeChecker('addoooa'));
+
+  // console.log(palindromeChecker('hello')); FALSE
+  // console.log(palindromeChecker('acecarr')); TRUE
+  // console.log(palindromeChecker('addoooa')); TRUE
+
+  let list = ['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'];
+
+  anagramGrouping(list);
 }
 
 main();
 
-function palindromeChecker(word) {
-  let palindrome = new HashMap();
-  let count = 0;
-  for (let i=0; i < word.length; i++) {
+
+
+
+function anagramGrouping(list) {
+  let group1 = new HashMap();
+  let arrayKeys = [];
+  let newArray = [];
+  for (let i = 0; i < list.length; i++) {
+    let sortedWord = alphabetize(list[i]);
     try {
-      palindrome.get(word[i]); 
+      group1.set(sortedWord, [...(group1.get(sortedWord)), list[i]]);
+    } catch (err) {
+      group1.set(sortedWord, [list[i]]);
+      arrayKeys.push(sortedWord);
     }
-    catch(err) {
-      count++;
+  }
+
+  for (let i=0; i< arrayKeys.length; i++) {
+    try {
+      newArray.push(group1.get(arrayKeys[i]));
+    } catch (err) {
+      console.log(err);
     }
-    palindrome.set(word[i]);
   }
-  if (word.length - count === (word.length / 2) || word.length - count === (word.length / 2 - .5) || word.length - count === (word.length / 2 + .5 )) {
-    return true;
-  } else {
-    return false;
-  }
+  console.log(newArray);
 }
+
+
+function alphabetize(word) {
+  if (!word) {
+    return;
+  }
+  word = word.split('');
+  word = word.sort();
+  word = word.join('');
+  return word;
+}
+
+
+
+// function palindromeChecker(word) {
+//   let palindrome = new HashMap();
+//   let count = 0;
+//   for (let i = 0; i < word.length; i++) {
+//     try {
+//       palindrome.get(word[i]);
+//     } catch (err) {
+//       count++;
+//     }
+//     palindrome.set(word[i]);
+//   }
+//   if (
+//     word.length - count === word.length / 2 ||
+//     word.length - count === word.length / 2 - 0.5 ||
+//     word.length - count === word.length / 2 + 0.5
+//   ) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
