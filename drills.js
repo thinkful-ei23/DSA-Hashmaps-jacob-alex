@@ -2,7 +2,6 @@
 
 const HashMap = require('./HashMap');
 const lor = new HashMap();
-const palindrome = new HashMap();
 
 function main() {
   // lor.set('Hobbit', 'Bilbo');
@@ -20,8 +19,18 @@ function main() {
 
   // INPUT = 'acecarr' : OUTPUT = true
 
-  let word = 'acecarr';
+  
+  console.log(palindromeChecker('hello'));
+  console.log(palindromeChecker('acecarr'));
+  console.log(palindromeChecker('addoooa'));
 
+}
+
+main();
+
+
+function palindromeChecker(word) {
+  let palindrome = new HashMap();
   for (let i=0; i < word.length; i++) {
     palindrome.set(word[i]);
   }
@@ -29,23 +38,12 @@ function main() {
   for (let i=0; i < palindrome._capacity; i++) {
     if (typeof(palindrome._slots[i]) !== 'undefined') {
       count++;
-    }
-
+    }  
   }
-  
-
-
-
-  console.log(palindrome);
-  console.log(palindrome.length);
-
-  
-
-
-
+  console.log('count',count)
+  if (word.length - count === (word.length / 2) || word.length - count === (word.length / 2 - .5) || word.length - count === (word.length / 2 + .5 )) {
+    return true;
+  } else {
+    return false;
+  }
 }
-
-
-
-
-main();
