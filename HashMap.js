@@ -1,23 +1,23 @@
-"use strict";
+'use strict';
 
 class HashMap {
   constructor(initialCapacity = 8) {
     this.length = 0;
     this._slots = [];
     this._capacity = initialCapacity;
+    this._deleted = 0;
   }
 
   get(key) {
     const index = this._findSlot(key);
     if (this._slots[index] === undefined) {
-      throw new Error("Key error");
+      throw new Error('Key error');
     }
     return this._slots[index].value;
   }
 
   set(key, value) {
-    // loadRatio = 0.7
-    const loadRatio = (this.length + 1) / this._capacity;
+    const loadRatio = (this.length + this._deleted + 1) / this._capacity;
     if (loadRatio > HashMap.MAX_LOAD_RATIO) {
       this._resize(this._capacity * HashMap.SIZE_RATIO);
     }
@@ -25,7 +25,8 @@ class HashMap {
     const index = this._findSlot(key);
     this._slots[index] = {
       key,
-      value
+      value,
+      deleted: false
     };
     this.length++;
   }
@@ -34,7 +35,7 @@ class HashMap {
     const index = this._findSlot(key);
     const slot = this._slots[index];
     if (slot === undefined) {
-      throw new Error("Key error");
+      throw new Error('Key error');
     }
     slot.deleted = true;
     this.length--;
@@ -47,13 +48,14 @@ class HashMap {
 
     for (let i = start; i < start + this._capacity; i++) {
       const index = i % this._capacity;
+
       const slot = this._slots[index];
-      if (slot === undefined || slot.key === key) {
+      if (slot === undefined || (slot.key === key && !slot.deleted)) {
         return index;
       }
     }
   }
-  
+
   _resize(size) {
     const oldSlots = this._slots;
     this._capacity = size;
@@ -81,3 +83,5 @@ class HashMap {
 
 HashMap.MAX_LOAD_RATIO = 0.9;
 HashMap.SIZE_RATIO = 3;
+
+module.exports = HashMap;
