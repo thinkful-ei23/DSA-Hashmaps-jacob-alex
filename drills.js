@@ -16,31 +16,26 @@ function main() {
   // lor.set('HalfElven', 'Arwen');
   // lor.set('Ent', 'Treebeard');
   // console.log(lor.get('Maiar'));
-
-  // INPUT = 'acecarr' : OUTPUT = true
-
   
   console.log(palindromeChecker('hello'));
   console.log(palindromeChecker('acecarr'));
   console.log(palindromeChecker('addoooa'));
-
 }
 
 main();
 
-
 function palindromeChecker(word) {
   let palindrome = new HashMap();
+  let count = 0;
   for (let i=0; i < word.length; i++) {
+    try {
+      palindrome.get(word[i]); 
+    }
+    catch(err) {
+      count++;
+    }
     palindrome.set(word[i]);
   }
-  let count = 0;
-  for (let i=0; i < palindrome._capacity; i++) {
-    if (typeof(palindrome._slots[i]) !== 'undefined') {
-      count++;
-    }  
-  }
-  console.log('count',count)
   if (word.length - count === (word.length / 2) || word.length - count === (word.length / 2 - .5) || word.length - count === (word.length / 2 + .5 )) {
     return true;
   } else {
